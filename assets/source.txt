@@ -1,0 +1,21 @@
+Character assets taken from https://code-farmer.itch.io/touhou-pixe-characters
+
+/ introduce
+This is a touhou-themed pixel villain character.
+
+/ Character content
+This pack contains all the characters in the Red Devil Township.
+
+Reimu Hiroshi, Marisa, Rumia, Fairy Fairy, Kiruno, Red Misuzu, Little Devil, Pacuri, Sakiya, Remilia, Flandoro.
+
+There are a total of 11 characters.
+
+/ Action content
+Basic actions are provided, and you can do more corresponding actions when playing the game.
+
+There are a total of 4 directions, and the movements have independent directional movements.
+
+Stand, walk, attack, defend, cast, fall.
+
+/ Terms of Use
+Feel free to use it in accordance with the Touhou Project's terms of use. This asset pack can be re-edited at will, and cannot be re-sold

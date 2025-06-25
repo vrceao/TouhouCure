@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TouhouCure</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style/style.css">
+</head>
+<body>
+    <div id="canvas-container">
+        <canvas id="touhouCureApp"></canvas>
+    </div>
+
+    <div class="overlay">
+        <p>Welcome to TouhouCure!</p>
+    </div>
+
+    <div class="overlay" style="top: 16px">
+        <p>Move - A/D</p>
+        <div class="overlay-separator"></div>
+        <p>Change - W/S</p>
+        <div class="overlay-separator"></div>
+        <p>Submit - Space/Enter</p>
+        <div class="overlay-separator"></div>
+        <p>Close - Q/Escape</p>
+    </div>
+
+    <div class="overlay" style="bottom: 16px">
+        <p>Resolution</p>
+        <p class="overlay-option">640x360 (x1.00)</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js"></script>
+    <script src="src/index.js"></script>
+    <script src="src/canvas.js"></script>
+    <script src="src/overlay.js"></script>
+    <script src="src/game.js"></script>
+</body>
+</html>
