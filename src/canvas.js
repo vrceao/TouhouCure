@@ -4,9 +4,13 @@
 let resMulti = 1;
 let attackFrame = 0;
 let frame = 0;
-let frameIndex = 0;
-let frameIndexAttack = 0;
-let frameIndexCast = 0;
+let frameIndex = {
+    stand: 0,
+    walk: 0,
+    attack: 0,
+    defend: 0,
+    cast: 0
+}
 let animationInterval = 30;
 
 let assets = {
@@ -67,8 +71,7 @@ function setup() {
     createCanvas(1280, 720, touhouCureApp);
     colorMode(RGB, 255);
     noSmooth();
-    textFont("Inter");
-    textStyle(BOLD)
+    textFont("Silkscreen");
 
     assets = {
         exp: {
@@ -196,32 +199,58 @@ function setup() {
 
 function draw_CANVAS() {
     background(32, 32, 32);
-    textSize(10 * resMulti);
+    textSize(12 * resMulti);
+
+    let ctx = drawingContext;
+
+    // EXP bar background
+    let backgroundGradient = ctx.createLinearGradient(0, 0, 640 * resMulti, 0);
+    backgroundGradient.addColorStop(0, 'rgba(85, 194, 215, 0.5)');
+    backgroundGradient.addColorStop(1, 'rgba(94, 221, 238, 0.5)');
+    ctx.fillStyle = backgroundGradient;
+    ctx.fillRect(0, 0, 640 * resMulti, 8 * resMulti);
+    ctx.beginPath();
+    ctx.moveTo(560 * resMulti, 8 * resMulti);
+    ctx.lineTo(565 * resMulti, 16 * resMulti);
+    ctx.lineTo(640 * resMulti, 16 * resMulti);
+    ctx.lineTo(640 * resMulti, 8 * resMulti);
+    ctx.closePath();
+    ctx.fill();
+
+    // EXP bar progress
+    let foregroundGradient = ctx.createLinearGradient(0, 0, 640 * resMulti, 0);
+    foregroundGradient.addColorStop(0, 'rgba(85, 194, 215)');
+    foregroundGradient.addColorStop(1, 'rgba(94, 221, 238)');
+    ctx.fillStyle = foregroundGradient;
+    ctx.fillRect(0, 0, levelProgress * 6.4 * resMulti, 8 * resMulti);
+    if (levelProgress * 6.4 >= 560) {
+        ctx.beginPath();
+        ctx.moveTo(560 * resMulti, 8 * resMulti);
+        ctx.lineTo(565 * resMulti, 16 * resMulti);
+        ctx.lineTo(565 * resMulti + levelProgress * 6.4 * resMulti - 565 * resMulti, 16 * resMulti);
+        ctx.lineTo(565 * resMulti + levelProgress * 6.4 * resMulti - 565 * resMulti, 8 * resMulti);
+        ctx.closePath();
+        ctx.fill();
+    }
+
+    strokeWeight(3 * resMulti);
+    line(0, 8 * resMulti, 560 * resMulti, 8 * resMulti);
+    line(560 * resMulti, 8 * resMulti, 565 * resMulti, 16 * resMulti);
+    line(565 * resMulti, 16 * resMulti, 640 * resMulti, 16 * resMulti);
+
+    fill(255, 255, 255);
+    text(`Lvl. ${level}`, 570 * resMulti, 12 * resMulti);
+
     strokeWeight(0);
-
-    // GREEN
-    for (let i = 0; i < Math.floor(levelProgress); i++) {
-        image(assets.exp.bar[1], 4 * resMulti +
-            // 6 * 10 * resMulti +
-            6 * i * resMulti, 4 * resMulti, 6 * resMulti, 6 * resMulti);
-    }
-    // RED
-    for (let i = 0; i < 100 - Math.floor(levelProgress); i++) {
-        image(assets.exp.bar[0], 4 * resMulti +
-            Math.floor(levelProgress) * 6 * resMulti +
-            // 6 * 10 * resMulti +
-            6 * i * resMulti, 4 * resMulti, 6 * resMulti, 6 * resMulti);
-    }
-
-    text(`Lvl ${level}`, 608 * resMulti, 10 * resMulti);
-
     fill(0, 255, 0);
     if (currentAction == "attack") {
         square(currentPosition[0] * resMulti - 32 * resMulti, currentPosition[1] * resMulti - 32 * resMulti, 64 * resMulti);
-        image(characters[currentCharacter][currentAction][currentDirection][frameIndexAttack], currentPosition[0] * resMulti - 32 * resMulti, currentPosition[1] * resMulti - 32 * resMulti, 64 * resMulti, 64 * resMulti);
+        image(characters[currentCharacter][currentAction][currentDirection][frameIndex.attack], currentPosition[0] * resMulti - 32 * resMulti, currentPosition[1] * resMulti - 32 * resMulti, 64 * resMulti, 64 * resMulti);
     } else if (currentAction == "cast") {
-        image(characters[currentCharacter][currentAction][currentDirection][frameIndexCast], currentPosition[0] * resMulti - 32 * resMulti, currentPosition[1] * resMulti - 32 * resMulti, 64 * resMulti, 64 * resMulti);
-    } else {
-        image(characters[currentCharacter][currentAction][currentDirection][frameIndex], currentPosition[0] * resMulti - 32 * resMulti, currentPosition[1] * resMulti - 32 * resMulti, 64 * resMulti, 64 * resMulti);
+        image(characters[currentCharacter][currentAction][currentDirection][frameIndex.cast], currentPosition[0] * resMulti - 32 * resMulti, currentPosition[1] * resMulti - 32 * resMulti, 64 * resMulti, 64 * resMulti);
+    } else if (currentAction == "walk") {
+        image(characters[currentCharacter][currentAction][currentDirection][frameIndex.walk], currentPosition[0] * resMulti - 32 * resMulti, currentPosition[1] * resMulti - 32 * resMulti, 64 * resMulti, 64 * resMulti);
+    } else if (currentAction == "stand") {
+        image(characters[currentCharacter][currentAction][currentDirection][frameIndex.stand], currentPosition[0] * resMulti - 32 * resMulti, currentPosition[1] * resMulti - 32 * resMulti, 64 * resMulti, 64 * resMulti);
     }
 }

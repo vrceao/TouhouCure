@@ -1,1 +1,0 @@
-- walk animation uses 2 frames instead of 4

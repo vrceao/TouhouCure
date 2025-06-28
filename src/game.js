@@ -20,26 +20,20 @@ let speed = 1;
 
 let level = 0;
 let exp = 0;
-let neededExp = {
-    1: 50,
-    2: 60,
-    3: 70,
-    4: 80,
-    5: 90,
-    6: 100
-}
-let levelProgress = 0;
+let neededExp = 25;
+let levelProgress = 90;
 
 let castingProgress = 0;
 let casting = false;
 
 function increaseEXP(value) {
     exp += value;
-    levelProgress = exp * 100 / neededExp[level + 1];
+    levelProgress = exp * 100 / neededExp;
 
     if (levelProgress >= 100) {
-        exp -= neededExp[level + 1];
-        levelProgress = exp * 100 / neededExp[level + 1];
+        exp -= neededExp;
+        levelProgress = exp * 100 / neededExp;
+        neededExp = Math.ceil(neededExp * 1.1);
         level++;
     }
 }
@@ -49,7 +43,7 @@ function keyPressed_GAME_MOVEMENT() {
         casting = true;
     }
 
-    if (key == "h") increaseEXP(3);
+    if (key == "h") increaseEXP(1);
 
     if (key == "g") {
         if (currentCharacter == "reimu") currentCharacter = "marisa";
@@ -78,6 +72,7 @@ function updateAction() {
     }
 
     if (currentAction != "attack" && !casting) {
+        currentAction = "stand";
         if (keysHeld.up) currentAction = "walk";
         else if (keysHeld.down) currentAction = "walk";
         else if (keysHeld.left) currentAction = "walk";
@@ -110,10 +105,16 @@ function draw_GAME() {
     frame++;
     attackFrame++;
 
-    // Animation
+    // Animation - stand
     if (frame % animationInterval == 0) {
-        frameIndex++;
-        frameIndex = frameIndex % 2;
+        frameIndex.stand++;
+        frameIndex.stand = frameIndex.stand % 2;
+    }
+
+    // Animation - walk
+    if (frame % animationInterval == 0) {
+        frameIndex.walk++;
+        frameIndex.walk = frameIndex.walk % 4;
     }
 
     // Attack
@@ -124,11 +125,11 @@ function draw_GAME() {
         attackProgress++;
         if (attackProgress >= attackSpeed) {
             attackProgress = 0;
-            frameIndexAttack = 0;
+            frameIndex.attack = 0;
             attack("stop");
         }
         if (attackProgress == attackSpeed / 2) {
-            frameIndexAttack++;
+            frameIndex.attack++;
         }
     }
 
@@ -138,11 +139,11 @@ function draw_GAME() {
         castingProgress++;
         if (castingProgress >= 60) {
             castingProgress = 0;
-            frameIndexCast = 0;
+            frameIndex.cast = 0;
             cast("stop");
         }
         if (castingProgress == 60 / 2) {
-            frameIndexCast++;
+            frameIndex.cast++;
         }
     }
 

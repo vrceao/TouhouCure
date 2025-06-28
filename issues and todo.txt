@@ -1,0 +1,7 @@
+! Done
+
+// walk animation uses 2 frames instead of 4
+
+! Not done
+
+// add health and the die animation to be currentAction = "fall"
