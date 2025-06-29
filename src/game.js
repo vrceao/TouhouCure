@@ -1,5 +1,5 @@
 
-let currentPosition = [64, 64];
+let currentPosition = [320 * resMulti, 180 * resMulti];
 
 let keysHeld = {
     up: false,
@@ -18,13 +18,43 @@ let attackSpeed = 60;
 
 let speed = 1;
 
+let maxhealth = 10;
+let health = 8;
+
+let inventory = {
+    weapons: [
+        null,
+        null,
+        null,
+        null,
+        null
+    ],
+    items: [
+        null,
+        null,
+        null,
+        null,
+        null
+    ]
+}
+
 let level = 0;
 let exp = 0;
-let neededExp = 25;
-let levelProgress = 90;
+let neededExp = 10;
+let levelProgress = 0;
 
 let castingProgress = 0;
 let casting = false;
+
+function maidDied() {
+    currentAction = "fall";
+}
+
+function decreaseHealth(value) {
+    health--;
+    if (health < 0) health = 0;
+    if (health == 0) maidDied();
+}
 
 function increaseEXP(value) {
     exp += value;
@@ -45,6 +75,8 @@ function keyPressed_GAME_MOVEMENT() {
 
     if (key == "h") increaseEXP(1);
 
+    if (key == "j") decreaseHealth(1);
+
     if (key == "g") {
         if (currentCharacter == "reimu") currentCharacter = "marisa";
         else if (currentCharacter == "marisa") currentCharacter = "flandre";
@@ -64,14 +96,14 @@ function updateAction() {
     keysHeld.left = keyIsDown(65) || keyIsDown(LEFT_ARROW);
     keysHeld.right = keyIsDown(68) || keyIsDown(RIGHT_ARROW);
 
-    if (attackProgress < 30 && !casting) {
+    if (currentAction == "stand" && attackProgress < 30 || currentAction == "walk" && attackProgress < 30) {
         if (keysHeld.up) currentDirection = "up";
         else if (keysHeld.down) currentDirection = "down";
         else if (keysHeld.left) currentDirection = "left";
         else if (keysHeld.right) currentDirection = "right";
     }
 
-    if (currentAction != "attack" && !casting) {
+    if (currentAction == "attack" && currentAction == "walk") {
         currentAction = "stand";
         if (keysHeld.up) currentAction = "walk";
         else if (keysHeld.down) currentAction = "walk";
@@ -118,7 +150,7 @@ function draw_GAME() {
     }
 
     // Attack
-    if (attackFrame % attackInterval == 0) {
+    if (attackFrame % attackInterval == 0 && currentAction != "fall") {
         attack("start");
     }
     if (currentAction == "attack") {
@@ -147,7 +179,7 @@ function draw_GAME() {
         }
     }
 
-    if (!casting) {
+    if (currentAction != "cast" && currentAction != "fall") {
         if (keysHeld.up && keysHeld.left || keysHeld.up && keysHeld.right || keysHeld.down && keysHeld.left || keysHeld.down && keysHeld.right) {
             if (keysHeld.up && keysHeld.left) { currentPosition[1] -= speed / 1.414; currentPosition[0] -= speed / 1.414 }
             if (keysHeld.up && keysHeld.right) { currentPosition[1] -= speed / 1.414; currentPosition[0] += speed / 1.414 }

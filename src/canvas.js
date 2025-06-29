@@ -68,7 +68,7 @@ function changeResolution(width, height) {
 //! Create canvas
 
 function setup() {
-    createCanvas(1280, 720, touhouCureApp);
+    createCanvas(640, 360, touhouCureApp);
     colorMode(RGB, 255);
     noSmooth();
     textFont("Silkscreen");
@@ -112,10 +112,10 @@ function setup() {
                 right: [SPRITESHEET_REIMU.get(0, 1216, 64, 64), SPRITESHEET_REIMU.get(64, 1216, 64, 64)],
             },
             fall: {
-                up: [SPRITESHEET_REIMU.get(0, 1280, 64, 64), SPRITESHEET_REIMU.get(0, 1280, 64, 64)],
-                down: [SPRITESHEET_REIMU.get(0, 1344, 64, 64), SPRITESHEET_REIMU.get(0, 1344, 64, 64)],
-                left: [SPRITESHEET_REIMU.get(0, 1408, 64, 64), SPRITESHEET_REIMU.get(0, 1408, 64, 64)],
-                right: [SPRITESHEET_REIMU.get(0, 1472, 64, 64), SPRITESHEET_REIMU.get(0, 1472, 64, 64)],
+                up: SPRITESHEET_REIMU.get(0, 1280, 64, 64),
+                down: SPRITESHEET_REIMU.get(0, 1344, 64, 64),
+                left: SPRITESHEET_REIMU.get(0, 1408, 64, 64),
+                right: SPRITESHEET_REIMU.get(0, 1472, 64, 64)
             }
         },
         marisa: {
@@ -150,10 +150,10 @@ function setup() {
                 right: [SPRITESHEET_MARISA.get(0, 1216, 64, 64), SPRITESHEET_MARISA.get(64, 1216, 64, 64)],
             },
             fall: {
-                up: [SPRITESHEET_MARISA.get(0, 1280, 64, 64), SPRITESHEET_MARISA.get(0, 1280, 64, 64)],
-                down: [SPRITESHEET_MARISA.get(0, 1344, 64, 64), SPRITESHEET_MARISA.get(0, 1344, 64, 64)],
-                left: [SPRITESHEET_MARISA.get(0, 1408, 64, 64), SPRITESHEET_MARISA.get(0, 1408, 64, 64)],
-                right: [SPRITESHEET_MARISA.get(0, 1472, 64, 64), SPRITESHEET_MARISA.get(0, 1472, 64, 64)],
+                up: SPRITESHEET_MARISA.get(0, 1280, 64, 64),
+                down: SPRITESHEET_MARISA.get(0, 1344, 64, 64),
+                left: SPRITESHEET_MARISA.get(0, 1408, 64, 64),
+                right: SPRITESHEET_MARISA.get(0, 1472, 64, 64)
             }
         },
         flandre: {
@@ -188,10 +188,10 @@ function setup() {
                 right: [SPRITESHEET_FLANDRE.get(0, 1216, 64, 64), SPRITESHEET_FLANDRE.get(64, 1216, 64, 64)],
             },
             fall: {
-                up: [SPRITESHEET_FLANDRE.get(0, 1280, 64, 64), SPRITESHEET_FLANDRE.get(0, 1280, 64, 64)],
-                down: [SPRITESHEET_FLANDRE.get(0, 1344, 64, 64), SPRITESHEET_FLANDRE.get(0, 1344, 64, 64)],
-                left: [SPRITESHEET_FLANDRE.get(0, 1408, 64, 64), SPRITESHEET_FLANDRE.get(0, 1408, 64, 64)],
-                right: [SPRITESHEET_FLANDRE.get(0, 1472, 64, 64), SPRITESHEET_FLANDRE.get(0, 1472, 64, 64)],
+                up: SPRITESHEET_FLANDRE.get(0, 1280, 64, 64),
+                down: SPRITESHEET_FLANDRE.get(0, 1344, 64, 64),
+                left: SPRITESHEET_FLANDRE.get(0, 1408, 64, 64),
+                right: SPRITESHEET_FLANDRE.get(0, 1472, 64, 64)
             }
         }
     }
@@ -199,7 +199,7 @@ function setup() {
 
 function draw_CANVAS() {
     background(32, 32, 32);
-    textSize(12 * resMulti);
+    console.log(currentAction);
 
     let ctx = drawingContext;
 
@@ -233,15 +233,47 @@ function draw_CANVAS() {
         ctx.fill();
     }
 
+    // EXP bar outline
     strokeWeight(3 * resMulti);
     line(0, 8 * resMulti, 560 * resMulti, 8 * resMulti);
     line(560 * resMulti, 8 * resMulti, 565 * resMulti, 16 * resMulti);
     line(565 * resMulti, 16 * resMulti, 640 * resMulti, 16 * resMulti);
 
+    // Level text
+    textSize(12 * resMulti);
     fill(255, 255, 255);
     text(`Lvl. ${level}`, 570 * resMulti, 12 * resMulti);
 
+    // Maid picture
     strokeWeight(0);
+    rect(6 * resMulti, (10 + 6) * resMulti, 48 * resMulti, 48 * resMulti);
+
+    // Health bar
+    fill(255, 0, 0);
+    rect(58 * resMulti, 16 * resMulti, 96 * resMulti, 6 * resMulti);
+    fill(0, 255, 0);
+    rect(58 * resMulti, 16 * resMulti, Math.ceil(health / maxhealth * 96) * resMulti, 6 * resMulti);
+    textSize(6 * resMulti);
+    fill(0, 0, 0);
+    text(`${health}/${maxhealth}`, 60 * resMulti, 21 * resMulti);
+
+    // Inventory
+    fill(255, 255, 255);
+    for (let i = 0; i < inventory.weapons.length; i++) {
+        square(
+            58 * resMulti + 20 * resMulti * i,
+            26 * resMulti,
+            16 * resMulti
+        )
+    }
+    for (let i = 0; i < inventory.items.length; i++) {
+        square(
+            58 * resMulti + 20 * resMulti * i,
+            48 * resMulti,
+            16 * resMulti
+        )
+    }
+
     fill(0, 255, 0);
     if (currentAction == "attack") {
         square(currentPosition[0] * resMulti - 32 * resMulti, currentPosition[1] * resMulti - 32 * resMulti, 64 * resMulti);
@@ -252,5 +284,7 @@ function draw_CANVAS() {
         image(characters[currentCharacter][currentAction][currentDirection][frameIndex.walk], currentPosition[0] * resMulti - 32 * resMulti, currentPosition[1] * resMulti - 32 * resMulti, 64 * resMulti, 64 * resMulti);
     } else if (currentAction == "stand") {
         image(characters[currentCharacter][currentAction][currentDirection][frameIndex.stand], currentPosition[0] * resMulti - 32 * resMulti, currentPosition[1] * resMulti - 32 * resMulti, 64 * resMulti, 64 * resMulti);
+    } else if (currentAction == "fall") {
+        image(characters[currentCharacter][currentAction][currentDirection], currentPosition[0] * resMulti - 32 * resMulti, currentPosition[1] * resMulti - 32 * resMulti, 64 * resMulti, 64 * resMulti);
     }
 }

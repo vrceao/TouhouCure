@@ -7,7 +7,7 @@ onload = function() {
     changeOverlaySelected(0);
 
     //? Change the resolution to x2.00 on page load (uncomment lines below)
-    changeResolution(1280, 720);
+    // changeResolution(1280, 720);
 }
 
 let SPRITESHEET_MAIN;

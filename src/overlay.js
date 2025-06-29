@@ -2,7 +2,7 @@
 //! Customizable variables
 
 //? Changes the amount of time you need to hold the key for to show the overlay (ms)
-let escapeHoldDuration = 500;
+let escapeHoldDuration = 250;
 
 //! Detecting for escape being held
 
@@ -27,6 +27,7 @@ function keyPressed_OVERLAY_VISIBILITY() {
     }
     if (escapeHeld == false) {
         if (key == "Escape" || key == "q" || key == "Q") {
+            document.getElementById("devtext").style.display = "none"; //! Temporary dev text
             escapeHeld = true;
             timerID = setInterval(increaseTimer, 10);
         }

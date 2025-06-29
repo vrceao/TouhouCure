@@ -1,7 +1,13 @@
 ! Done
 
 // walk animation uses 2 frames instead of 4
+// add health and the die animation to be currentAction = "fall"
 
 ! Not done
 
-// add health and the die animation to be currentAction = "fall"
+// Special mechanic and loading bar
+// Find or draw a picture of current maids (0/3)
+// Find or draw some items and weapons (0/10)
+// Find or draw a map
+// Make the map auto-generate infinitely (may be difficult)
+// Make the map scroll with the player
