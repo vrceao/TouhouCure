@@ -1,5 +1,5 @@
 
-let currentPosition = [320 * resMulti, 180 * resMulti];
+let currentPosition = [640 / 2 * mapMulti, 360 / 2 * mapMulti];
 
 let keysHeld = {
     up: false,
@@ -20,6 +20,9 @@ let speed = 1;
 
 let maxhealth = 10;
 let health = 8;
+
+let specialCooldown = 5; // Seconds
+let specialProgress = 0;
 
 let inventory = {
     weapons: [
@@ -45,6 +48,16 @@ let levelProgress = 0;
 
 let castingProgress = 0;
 let casting = false;
+
+function useSpecial() {
+    if (specialProgress / 60 == specialCooldown) {
+        specialProgress = 0;
+        if (health < maxhealth) {
+            health++;
+            if (health > maxhealth) health = maxhealth;
+        }
+    }
+}
 
 function maidDied() {
     currentAction = "fall";
@@ -73,15 +86,17 @@ function keyPressed_GAME_MOVEMENT() {
         casting = true;
     }
 
-    if (key == "h") increaseEXP(1);
-
-    if (key == "j") decreaseHealth(1);
-
     if (key == "g") {
         if (currentCharacter == "reimu") currentCharacter = "marisa";
         else if (currentCharacter == "marisa") currentCharacter = "flandre";
         else currentCharacter = "reimu";
     }
+
+    if (key == "h") increaseEXP(1);
+
+    if (key == "j") decreaseHealth(1);
+
+    if (key == "k") useSpecial();
 
     updateAction();
 }
@@ -136,6 +151,9 @@ function cast(value) {
 function draw_GAME() {
     frame++;
     attackFrame++;
+
+    // Special loop
+    if (specialProgress / 60 != specialCooldown) specialProgress++;
 
     // Animation - stand
     if (frame % animationInterval == 0) {

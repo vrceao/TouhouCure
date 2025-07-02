@@ -2,6 +2,7 @@
 //! Resize canvas
 
 let resMulti = 1;
+let mapMulti = 5;
 let attackFrame = 0;
 let frame = 0;
 let frameIndex = {
@@ -199,6 +200,16 @@ function setup() {
 
 function draw_CANVAS() {
     background(32, 32, 32);
+
+    // Map
+    image(
+        MAP,
+        width / 2 - currentPosition[0] * resMulti,
+        height / 2 - currentPosition[1] * resMulti,
+        640 * mapMulti * resMulti,
+        360 * mapMulti * resMulti
+    );
+
     console.log(currentAction);
 
     let ctx = drawingContext;
@@ -246,7 +257,7 @@ function draw_CANVAS() {
 
     // Maid picture
     strokeWeight(0);
-    rect(6 * resMulti, (10 + 6) * resMulti, 48 * resMulti, 48 * resMulti);
+    rect(6 * resMulti, 16 * resMulti, 48 * resMulti, 48 * resMulti);
 
     // Health bar
     fill(255, 0, 0);
@@ -274,16 +285,22 @@ function draw_CANVAS() {
         )
     }
 
+    // Special bar
+    fill(0, 0, 0);
+    rect(6 * resMulti, 67 * resMulti, 48 * resMulti, 3 * resMulti);
+    fill(255, 255, 255);
+    rect(6 * resMulti, 67 * resMulti, ((specialProgress / 60) / specialCooldown) * 48 * resMulti, 3 * resMulti);
+
     fill(0, 255, 0);
     if (currentAction == "attack") {
-        square(currentPosition[0] * resMulti - 32 * resMulti, currentPosition[1] * resMulti - 32 * resMulti, 64 * resMulti);
-        image(characters[currentCharacter][currentAction][currentDirection][frameIndex.attack], currentPosition[0] * resMulti - 32 * resMulti, currentPosition[1] * resMulti - 32 * resMulti, 64 * resMulti, 64 * resMulti);
+        square(640 / 2 * resMulti, 360 / 2 * resMulti, 64 * resMulti);
+        image(characters[currentCharacter][currentAction][currentDirection][frameIndex.attack], 640 / 2 * resMulti, 360 / 2 * resMulti, 64 * resMulti, 64 * resMulti);
     } else if (currentAction == "cast") {
-        image(characters[currentCharacter][currentAction][currentDirection][frameIndex.cast], currentPosition[0] * resMulti - 32 * resMulti, currentPosition[1] * resMulti - 32 * resMulti, 64 * resMulti, 64 * resMulti);
+        image(characters[currentCharacter][currentAction][currentDirection][frameIndex.cast], 640 / 2 * resMulti, 360 / 2 * resMulti, 64 * resMulti, 64 * resMulti);
     } else if (currentAction == "walk") {
-        image(characters[currentCharacter][currentAction][currentDirection][frameIndex.walk], currentPosition[0] * resMulti - 32 * resMulti, currentPosition[1] * resMulti - 32 * resMulti, 64 * resMulti, 64 * resMulti);
+        image(characters[currentCharacter][currentAction][currentDirection][frameIndex.walk], 640 / 2 * resMulti, 360 / 2 * resMulti, 64 * resMulti, 64 * resMulti);
     } else if (currentAction == "stand") {
-        image(characters[currentCharacter][currentAction][currentDirection][frameIndex.stand], currentPosition[0] * resMulti - 32 * resMulti, currentPosition[1] * resMulti - 32 * resMulti, 64 * resMulti, 64 * resMulti);
+        image(characters[currentCharacter][currentAction][currentDirection][frameIndex.stand], 640 / 2 * resMulti, 360 / 2 * resMulti, 64 * resMulti, 64 * resMulti);
     } else if (currentAction == "fall") {
         image(characters[currentCharacter][currentAction][currentDirection], currentPosition[0] * resMulti - 32 * resMulti, currentPosition[1] * resMulti - 32 * resMulti, 64 * resMulti, 64 * resMulti);
     }

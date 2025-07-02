@@ -10,12 +10,14 @@ onload = function() {
     // changeResolution(1280, 720);
 }
 
+let MAP;
 let SPRITESHEET_MAIN;
 let SPRITESHEET_REIMU;
 let SPRITESHEET_MARISA;
 let SPRITESHEET_FLANDRE;
 
 function preload() {
+    MAP = loadImage("assets/map.png");
     SPRITESHEET_MAIN = loadImage("assets/spritesheet_main.png");
     SPRITESHEET_REIMU = loadImage("assets/spritesheet_reimu.png");
     SPRITESHEET_MARISA = loadImage("assets/spritesheet_marisa.png");
